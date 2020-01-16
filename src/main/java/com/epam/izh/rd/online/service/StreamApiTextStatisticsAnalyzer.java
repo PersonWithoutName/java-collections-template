@@ -2,10 +2,7 @@ package com.epam.izh.rd.online.service;
 
 import com.epam.izh.rd.online.helper.Direction;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,8 +39,7 @@ public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
 
     @Override
     public Set<String> getUniqueWords(String text) {
-        return getWords(text).stream()
-                .collect(Collectors.toSet());
+        return new HashSet<>(getWords(text));
     }
 
     @Override
@@ -54,6 +50,13 @@ public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
 
     @Override
     public List<String> sortWordsByLength(String text, Direction direction) {
-        return emptyList();
+        if (direction.equals(Direction.ASC)) {
+            return getWords(text).stream()
+                    .sorted(Comparator.comparing(String::length))
+                    .collect(Collectors.toList());
+        }
+        return getWords(text).stream()
+                .sorted(Comparator.comparing(String::length).reversed())
+                .collect(Collectors.toList());
     }
 }
