@@ -31,7 +31,7 @@ public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
 
     @Override
     public int countNumberOfUniqueWords(String text) {
-        return 0;
+        return (int) getUniqueWords(text).stream().count();
     }
 
     @Override
@@ -42,12 +42,14 @@ public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
 
     @Override
     public Set<String> getUniqueWords(String text) {
-        return emptySet();
+        return getWords(text).stream()
+                .collect(Collectors.toSet());
     }
 
     @Override
     public Map<String, Integer> countNumberOfWordsRepetitions(String text) {
-        return emptyMap();
+        return getWords(text).stream()
+                .collect(Collectors.groupingBy(word -> word, Collectors.summingInt(word -> 1)));
     }
 
     @Override
